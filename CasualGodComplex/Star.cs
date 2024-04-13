@@ -1,22 +1,56 @@
-﻿
+﻿using System;
 using System.Numerics;
 
-namespace CasualGodComplex
+namespace CasualGodComplex;
+
+public class Star
 {
-    public class Star
+    public Star(Vector3 position, string name, double temp, double mass, double radius, StarSequenceEnum sequence)
     {
-        public Vector3 Position { get; internal set; }
+        Name = name;
+        Position = position;
+        Temperature = temp;
+        Mass = mass;
+        Radius = radius;
+        Sequence = sequence;
+    }
 
-        public float Size { get; private set; }
-        public string Name { get; private set; }
+    public Vector3 Position { get; internal set; }
 
-        public float Temperature { get; internal set; }
+    public double Radius { get; }
+    public string Name { get; private set; }
 
-        public Star(Vector3 position, string name, float temp = 0)
-        {
-            Name = name;
-            Position = position;
-            Temperature = temp;
-        }
+    public double Temperature { get; }
+    public double Mass { get; }
+    public StarSequenceEnum Sequence { get; }
+}
+
+public class GalaxySeed
+{
+    public GalaxySeed(int seed)
+    {
+        GalaxyRandom = new Random(seed);
+    }
+
+    public Random GalaxyRandom { get; }
+}
+
+public class StarFactory
+{
+    private readonly GalaxySeed _seed;
+
+    public StarFactory(GalaxySeed seed)
+    {
+        _seed = seed;
+    }
+
+    public static Star CreateRandomStar(Vector3 position)
+    {
+        return CreateRandomStar(StarSequenceEnum.O, position);
+    }
+
+    public static Star CreateRandomStar(StarSequenceEnum sequence, Vector3 position)
+    {
+        return new Star(position, "", 1.0, 1, 1, sequence);
     }
 }
