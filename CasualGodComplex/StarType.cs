@@ -12,6 +12,11 @@ internal class StarType
     public static StarType K = new(StarSequenceEnum.K);
     public static StarType M = new(StarSequenceEnum.M);
 
+    public static StarType GetType(double i)
+    {
+        if()
+    }
+
     private StarType(StarSequenceEnum sequence)
     {
         Sequence = sequence;

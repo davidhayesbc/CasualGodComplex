@@ -44,12 +44,14 @@ public class StarFactory
         _seed = seed;
     }
 
-    public static Star CreateRandomStar(Vector3 position)
+    public Star CreateRandomStar(Vector3 position)
     {
+        var starType = _seed.GalaxyRandom.NextDouble();
+
         return CreateRandomStar(StarSequenceEnum.O, position);
     }
 
-    public static Star CreateRandomStar(StarSequenceEnum sequence, Vector3 position)
+    public Star CreateRandomStar(StarSequenceEnum sequence, Vector3 position)
     {
         return new Star(position, "", 1.0, 1, 1, sequence);
     }
