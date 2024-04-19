@@ -15,6 +15,7 @@ public class Sphere
     private readonly float _deviationY;
     private readonly float _deviationZ;
     private readonly float _size;
+    private readonly StarFactory _starFactory;
 
     public Sphere(GalaxySeed seed,
         float size,
@@ -32,33 +33,26 @@ public class Sphere
         _deviationX = deviationX;
         _deviationY = deviationY;
         _deviationZ = deviationZ;
+        _starFactory = new StarFactory(seed);
     }
 
-    protected internal override IEnumerable<Star> Generate(Random random)
+    protected internal override IEnumerable<Star> Generate()
     {
-        var density = Math.Max(0, random.NormallyDistributedSingle(_densityDeviation, _densityMean));
+        var density = Math.Max(0, Seed.GalaxyRandom.NormallyDistributedSingle(_densityDeviation, _densityMean));
         var countMax = Math.Max(0, (int)(_size * _size * _size * density));
         if (countMax <= 0)
             yield break;
 
-        var count = random.Next(countMax);
+        var count = Seed.GalaxyRandom.Next(countMax);
 
         for (var i = 0; i < count; i++)
         {
-            var pos = new Vector3(
-                random.NormallyDistributedSingle(_deviationX * _size, 0),
-                random.NormallyDistributedSingle(_deviationY * _size, 0),
-                random.NormallyDistributedSingle(_deviationZ * _size, 0)
+            var position = new Vector3(
+                Seed.GalaxyRandom.NormallyDistributedSingle(_deviationX * _size, 0),
+                Seed.GalaxyRandom.NormallyDistributedSingle(_deviationY * _size, 0),
+                Seed.GalaxyRandom.NormallyDistributedSingle(_deviationZ * _size, 0)
             );
-            var d = pos.Length() / _size;
-            var m = d * 2000 + (1 - d) * 15000;
-            var t = random.NormallyDistributedSingle(4000, m, 1000, 40000);
-
-            yield return new Star(
-                pos,
-                StarName.Generate(random),
-                t
-            );
+            yield return _starFactory.CreateRandomStar(position);
         }
     }
 }

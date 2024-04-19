@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace CasualGodComplex;
 
@@ -12,5 +11,5 @@ public abstract class BaseGalaxySpec
 
     public GalaxySeed Seed { get; }
 
-    protected internal abstract IEnumerable<Star> Generate(Random random);
+    protected internal abstract IEnumerable<Star> Generate();
 }

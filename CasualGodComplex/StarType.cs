@@ -2,7 +2,7 @@
 
 namespace CasualGodComplex;
 
-internal class StarType
+public class StarType
 {
     public static StarType O = new(StarSequenceEnum.O);
     public static StarType B = new(StarSequenceEnum.B);
@@ -11,11 +11,6 @@ internal class StarType
     public static StarType G = new(StarSequenceEnum.G);
     public static StarType K = new(StarSequenceEnum.K);
     public static StarType M = new(StarSequenceEnum.M);
-
-    public static StarType GetType(double i)
-    {
-        if()
-    }
 
     private StarType(StarSequenceEnum sequence)
     {
@@ -33,43 +28,42 @@ internal class StarType
                     };
         MassRange = Sequence switch
                     {
-                        StarSequenceEnum.O => new Range<double>(16, 300),
-                        StarSequenceEnum.B => new Range<double>(2.1, 16),
-                        StarSequenceEnum.A => new Range<double>(1.4, 2.1),
-                        StarSequenceEnum.F => new Range<double>(1.04, 1.4),
-                        StarSequenceEnum.G => new Range<double>(0.8, 1.04),
-                        StarSequenceEnum.K => new Range<double>(0.45, 0.8),
-                        StarSequenceEnum.M => new Range<double>(0.08, 0.45),
+                        StarSequenceEnum.O => new ValueRange<double>(16, 300),
+                        StarSequenceEnum.B => new ValueRange<double>(2.1, 16),
+                        StarSequenceEnum.A => new ValueRange<double>(1.4, 2.1),
+                        StarSequenceEnum.F => new ValueRange<double>(1.04, 1.4),
+                        StarSequenceEnum.G => new ValueRange<double>(0.8, 1.04),
+                        StarSequenceEnum.K => new ValueRange<double>(0.45, 0.8),
+                        StarSequenceEnum.M => new ValueRange<double>(0.08, 0.45),
                         _ => throw new ArgumentOutOfRangeException(nameof(sequence), sequence, "Sequence is not an allowable value")
                     };
         ColorTemperatureRange = Sequence switch
                                 {
-                                    StarSequenceEnum.O => new Range<int>(30_000, 40_000),
-                                    StarSequenceEnum.B => new Range<int>(10_000, 30_000),
-                                    StarSequenceEnum.A => new Range<int>(7_500, 10_000),
-                                    StarSequenceEnum.F => new Range<int>(6_000, 7_500),
-                                    StarSequenceEnum.G => new Range<int>(5_200, 6_000),
-                                    StarSequenceEnum.K => new Range<int>(3_700, 5_200),
-                                    StarSequenceEnum.M => new Range<int>(2_400, 3_700),
+                                    StarSequenceEnum.O => new ValueRange<int>(30_000, 40_000),
+                                    StarSequenceEnum.B => new ValueRange<int>(10_000, 30_000),
+                                    StarSequenceEnum.A => new ValueRange<int>(7_500, 10_000),
+                                    StarSequenceEnum.F => new ValueRange<int>(6_000, 7_500),
+                                    StarSequenceEnum.G => new ValueRange<int>(5_200, 6_000),
+                                    StarSequenceEnum.K => new ValueRange<int>(3_700, 5_200),
+                                    StarSequenceEnum.M => new ValueRange<int>(2_400, 3_700),
                                     _ => throw new ArgumentOutOfRangeException(nameof(sequence), sequence, "Sequence is not an allowable value")
                                 };
         RadiusRange = Sequence switch
                       {
-                          StarSequenceEnum.O => new Range<double>(6.6, 10),
-                          StarSequenceEnum.B => new Range<double>(1.8, 6.6),
-                          StarSequenceEnum.A => new Range<double>(1.4, 1.8),
-                          StarSequenceEnum.F => new Range<double>(1.15, 1.4),
-                          StarSequenceEnum.G => new Range<double>(0.96, 1.15),
-                          StarSequenceEnum.K => new Range<double>(0.7, 0.96),
-                          StarSequenceEnum.M => new Range<double>(0.5, 0.7),
+                          StarSequenceEnum.O => new ValueRange<double>(6.6, 10),
+                          StarSequenceEnum.B => new ValueRange<double>(1.8, 6.6),
+                          StarSequenceEnum.A => new ValueRange<double>(1.4, 1.8),
+                          StarSequenceEnum.F => new ValueRange<double>(1.15, 1.4),
+                          StarSequenceEnum.G => new ValueRange<double>(0.96, 1.15),
+                          StarSequenceEnum.K => new ValueRange<double>(0.7, 0.96),
+                          StarSequenceEnum.M => new ValueRange<double>(0.5, 0.7),
                           _ => throw new ArgumentOutOfRangeException(nameof(sequence), sequence, "Sequence is not an allowable value")
                       };
     }
 
     public StarSequenceEnum Sequence { get; }
     public double Frequency { get; }
-    public Range<double> MassRange { get; }
-    public Range<int> ColorTemperatureRange { get; }
-    public Range<double> RadiusRange { get; }
-    public double FrequencyPercentage => Frequency * 100;
+    public ValueRange<double> MassRange { get; }
+    public ValueRange<int> ColorTemperatureRange { get; }
+    public ValueRange<double> RadiusRange { get; }
 }

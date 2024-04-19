@@ -78,32 +78,32 @@ public class Spiral
     public float CentralVoidSizeMean { get; set; }
     public float CentralVoidSizeDeviation { get; set; }
 
-    protected internal override IEnumerable<Star> Generate(Random random)
+    protected internal override IEnumerable<Star> Generate()
     {
-        var centralVoidSize = random.NormallyDistributedSingle(CentralVoidSizeDeviation, CentralVoidSizeMean);
+        var centralVoidSize = Seed.GalaxyRandom.NormallyDistributedSingle(CentralVoidSizeDeviation, CentralVoidSizeMean);
         if (centralVoidSize < 0)
             centralVoidSize = 0;
         var centralVoidSizeSqr = centralVoidSize * centralVoidSize;
 
-        foreach (var star in GenerateArms(random))
+        foreach (var star in GenerateArms())
             if (star.Position.LengthSquared() > centralVoidSizeSqr)
                 yield return star;
 
-        foreach (var star in GenerateCenter(random))
+        foreach (var star in GenerateCenter())
             if (star.Position.LengthSquared() > centralVoidSizeSqr)
                 yield return star;
 
-        foreach (var star in GenerateBackgroundStars(random))
+        foreach (var star in GenerateBackgroundStars())
             if (star.Position.LengthSquared() > centralVoidSizeSqr)
                 yield return star;
     }
 
-    private IEnumerable<Star> GenerateBackgroundStars(Random random)
+    private IEnumerable<Star> GenerateBackgroundStars()
     {
-        return new Sphere(Seed, Size, 0.000001f, 0.0000001f, 0.35f, 0.125f, 0.35f).Generate(random);
+        return new Sphere(Seed, Size, 0.000001f, 0.0000001f, 0.35f, 0.125f, 0.35f).Generate();
     }
 
-    private IEnumerable<Star> GenerateCenter(Random random)
+    private IEnumerable<Star> GenerateCenter()
     {
         //Add a single central cluster
         var sphere = new Sphere(Seed,
@@ -119,26 +119,26 @@ public class Spiral
             CenterClusterCountMean, CenterClusterCountDeviation, Size * CenterClusterPositionDeviation, Size * CenterClusterPositionDeviation, Size * CenterClusterPositionDeviation
         );
 
-        foreach (var star in cluster.Generate(random))
+        foreach (var star in cluster.Generate())
             yield return star.Swirl(Vector3.UnitY, Swirl * 5);
     }
 
-    private IEnumerable<Star> GenerateArms(Random random)
+    private IEnumerable<Star> GenerateArms()
     {
-        var arms = random.Next(MinimumArms, MaximumArms);
+        var arms = Seed.GalaxyRandom.Next(MinimumArms, MaximumArms);
         var armAngle = (float)(Math.PI * 2 / arms);
 
         var maxClusters = Size / Spacing / arms;
         for (var arm = 0; arm < arms; arm++)
         {
-            var clusters = (int)Math.Round(random.NormallyDistributedSingle(maxClusters * ClusterCountDeviation, maxClusters));
+            var clusters = (int)Math.Round(Seed.GalaxyRandom.NormallyDistributedSingle(maxClusters * ClusterCountDeviation, maxClusters));
             for (var i = 0; i < clusters; i++)
             {
                 //Angle from center of this arm
-                var angle = random.NormallyDistributedSingle(0.5f * armAngle * ClusterCenterDeviation, 0) + armAngle * arm;
+                var angle = Seed.GalaxyRandom.NormallyDistributedSingle(0.5f * armAngle * ClusterCenterDeviation, 0) + armAngle * arm;
 
                 //Distance along this arm
-                var dist = Math.Abs(random.NormallyDistributedSingle(Size * 0.4f, 0));
+                var dist = Math.Abs(Seed.GalaxyRandom.NormallyDistributedSingle(Size * 0.4f, 0));
 
                 //Center of the cluster
                 var center = Vector3.Transform(new Vector3(0, 0, dist), Quaternion.CreateFromAxisAngle(new Vector3(0, 1, 0), angle));
@@ -147,9 +147,9 @@ public class Spiral
                 var clsScaleDev = ArmClusterScaleDeviation * Size;
                 var clsScaleMin = MinArmClusterScale * Size;
                 var clsScaleMax = MaxArmClusterScale * Size;
-                var cSize = random.NormallyDistributedSingle(clsScaleDev, clsScaleMin * 0.5f + clsScaleMax * 0.5f, clsScaleMin, clsScaleMax);
+                var cSize = Seed.GalaxyRandom.NormallyDistributedSingle(clsScaleDev, clsScaleMin * 0.5f + clsScaleMax * 0.5f, clsScaleMin, clsScaleMax);
 
-                var stars = new Sphere(Seed, Size, 0.00025f, deviationX: 1, deviationY: 1, deviationZ: 1).Generate(random);
+                var stars = new Sphere(Seed, Size, 0.00025f, deviationX: 1, deviationY: 1, deviationZ: 1).Generate();
                 foreach (var star in stars)
                     yield return star.Offset(center).Swirl(Vector3.UnitY, Swirl);
             }

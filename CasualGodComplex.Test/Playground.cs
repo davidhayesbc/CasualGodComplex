@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using CasualGodComplex.Galaxies;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -11,8 +12,8 @@ public class Playground
     [TestMethod]
     public async Task Spiral()
     {
-        var g = await Galaxy.Generate(new Spiral(), new Random(1));
-        Console.WriteLine(g.To3JS());
+        var g = await Galaxy.Generate(new Spiral(new GalaxySeed(1)));
+        await File.WriteAllTextAsync("test.js", g.To3JS());
     }
 
     [TestMethod]

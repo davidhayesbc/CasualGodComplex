@@ -109,4 +109,19 @@ internal static class RandomExtensions
 
         return z * standardDeviation + mean;
     }
+
+    public static double NextDouble(this Random random, double min, double max)
+    {
+        return min + (max - min) * random.NextDouble();
+    }
+
+    public static double NextDouble(this Random random, ValueRange<double> range)
+    {
+        return random.NextDouble(range.Minimum, range.Maximum);
+    }
+
+    public static int Next(this Random random, ValueRange<int> range)
+    {
+        return random.Next(range.Minimum, range.Maximum);
+    }
 }

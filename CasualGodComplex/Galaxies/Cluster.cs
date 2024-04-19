@@ -30,21 +30,21 @@ public class Cluster
         _deviationZ = deviationZ;
     }
 
-    protected internal override IEnumerable<Star> Generate(Random random)
+    protected internal override IEnumerable<Star> Generate()
     {
-        var count = Math.Max(0, random.NormallyDistributedSingle(_countDeviation, _countMean));
+        var count = Math.Max(0, Seed.GalaxyRandom.NormallyDistributedSingle(_countDeviation, _countMean));
         if (count <= 0)
             yield break;
 
         for (var i = 0; i < count; i++)
         {
             var center = new Vector3(
-                random.NormallyDistributedSingle(_deviationX, 0),
-                random.NormallyDistributedSingle(_deviationY, 0),
-                random.NormallyDistributedSingle(_deviationZ, 0)
+                Seed.GalaxyRandom.NormallyDistributedSingle(_deviationX, 0),
+                Seed.GalaxyRandom.NormallyDistributedSingle(_deviationY, 0),
+                Seed.GalaxyRandom.NormallyDistributedSingle(_deviationZ, 0)
             );
 
-            foreach (var star in _basis.Generate(random))
+            foreach (var star in _basis.Generate())
                 yield return star.Offset(center);
         }
     }
